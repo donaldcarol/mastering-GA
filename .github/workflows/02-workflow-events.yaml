@@ -1,0 +1,21 @@
+name: 02 - Workflow Events
+
+description: Learn about different workflow events in Github Actions
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+    echo-hello:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Show the trigger
+
+              run: echo triggered by ${{ github.event_name }} event
+              
