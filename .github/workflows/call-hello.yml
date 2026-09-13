@@ -5,6 +5,8 @@ on:
 jobs:
   call-hello:
     uses: ./.github/workflows/reusable-hello.yml
+    with:
+      person: "Donald Trump"
     
 
     
