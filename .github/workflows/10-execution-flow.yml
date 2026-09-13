@@ -2,7 +2,7 @@ name: Execution Flow
 
 
 on:
-   giflow_dispatch:
+   workflow_dispatch: 
         inputs:
             pass-unit-tests:
                 type: boolean
