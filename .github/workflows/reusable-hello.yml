@@ -7,10 +7,24 @@ on:
         description: "Person to greet"
         required: true
         type: string
+
+    outputs:
+      greeting:
+        description: "The generated greeting"
+        value: ${{ jobs.say_hello.outputs.greeting }}
+
 jobs:
   say_hello:
     runs-on: ubuntu-latest
-    steps:
-      - name: Say Hello
-        run: echo "Hello, ${{ inputs.person }}! from the reusable workflow!"
 
+    outputs:
+      greeting: ${{ steps.create_greeting.outputs.message }}
+
+    steps:
+      - name: Create greeting
+        id: create_greeting
+        env:
+          PERSON: ${{ inputs.person }}
+        run: |
+          echo "Hello, $PERSON!"
+          echo "message=Hello, $PERSON!" >> "$GITHUB_OUTPUT"

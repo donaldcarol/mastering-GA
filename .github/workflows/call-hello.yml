@@ -14,3 +14,14 @@ jobs:
     uses: ./.github/workflows/reusable-hello.yml
     with:
       person: ${{ inputs.person }}
+
+  show-result:
+    needs: call-hello
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Display returned greeting
+        env:
+          GREETING: ${{ needs.call-hello.outputs.greeting }}
+        run: echo "Mesaj primit de la reutilizabil: $GREETING"
+        
