@@ -34,3 +34,10 @@ jobs:
         run: |
            echo "Mesaj primit de la reutilizabil: $GREETING"
            echo "Mesaj primit de la reutilizabil: $GREETING2"
+
+      - name: List repository issues
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          gh issue list --repo "$REPOSITORY" --state all --limit 10
