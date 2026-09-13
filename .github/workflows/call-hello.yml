@@ -41,13 +41,3 @@ jobs:
           REPOSITORY: ${{ github.repository }}
         run: |
           gh issue list --repo "$REPOSITORY" --state all --limit 10
-
-      - name: Create test issue
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPOSITORY: ${{ github.repository }}
-        run: |
-          gh issue create \
-            --repo "$REPOSITORY" \
-            --title "Issue creat din GitHub Actions" \
-            --body "Test pentru permisiunea issues: write."
