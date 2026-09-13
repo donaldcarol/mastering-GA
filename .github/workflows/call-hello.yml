@@ -23,5 +23,5 @@ jobs:
       - name: Display returned greeting
         env:
           GREETING: ${{ needs.call-hello.outputs.greeting }}
-        run: echo "Mesaj primit de la reutilizabil: $GREETING"
-        
+        run: |
+           echo "Mesaj primit de la reutilizabil: $GREETING"
