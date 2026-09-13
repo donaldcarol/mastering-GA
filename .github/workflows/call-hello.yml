@@ -15,13 +15,21 @@ jobs:
     with:
       person: ${{ inputs.person }}
 
+  call-hello-again:
+    uses: ./.github/workflows/reusable-hello.yml
+    with:
+      person: "Mickey Mouse"
+
+
   show-result:
-    needs: call-hello
+    needs: [call-hello, call-hello-again]
     runs-on: ubuntu-latest
 
     steps:
       - name: Display returned greeting
         env:
           GREETING: ${{ needs.call-hello.outputs.greeting }}
+          GREETING2: ${{ needs.call-hello-again.outputs.greeting }}
         run: |
            echo "Mesaj primit de la reutilizabil: $GREETING"
+           echo "Mesaj primit de la reutilizabil: $GREETING2"
