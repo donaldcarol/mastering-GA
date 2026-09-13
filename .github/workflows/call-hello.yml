@@ -1,12 +1,16 @@
-name: Call Hello Workflow
+name: Call Hello
+
 on:
-    workflow_dispatch:
+  workflow_dispatch:
+    inputs:
+      person:
+        description: "Pe cine vrei să saluți?"
+        required: true
+        type: string
+        default: "Donald"
 
 jobs:
   call-hello:
     uses: ./.github/workflows/reusable-hello.yml
     with:
-      person: "Donald Trump"
-    
-
-    
+      person: ${{ inputs.person }}
