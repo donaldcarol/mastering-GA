@@ -24,8 +24,8 @@ jobs:
   show-result:
     needs: [call-hello, call-hello-again]
     runs-on: ubuntu-latest
-    permissions: {}
-
+    permissions:
+      contents: read
     steps:
       - name: Display returned greeting
         env:
