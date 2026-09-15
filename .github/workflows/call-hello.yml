@@ -11,11 +11,13 @@ on:
 
 jobs:
   call-hello:
+    permissions: {}
     uses: ./.github/workflows/reusable-hello.yml
     with:
       person: ${{ inputs.person }}
 
   call-hello-again:
+    permissions: {}
     uses: ./.github/workflows/reusable-hello.yml
     with:
       person: "Mickey Mouse"
