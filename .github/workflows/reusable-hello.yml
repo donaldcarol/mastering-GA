@@ -16,6 +16,8 @@ on:
 jobs:
   say_hello:
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
 
     outputs:
       greeting: ${{ steps.create_greeting.outputs.message }}
