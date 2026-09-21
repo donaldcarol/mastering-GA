@@ -1,0 +1,47 @@
+name: Artifacts Demo
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  generate-report:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Create a report file
+        run: |
+          mkdir -p reports
+          cd reports
+          echo "This is a sample report." > report.txt
+          echo "Report generated on $(date)" >> report.txt
+          echo ${GITHUB_REPOSITORY} >> report.txt
+          echo ${GITHUB_SHA} >> report.txt
+
+      - name: Upload report as artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: demo-report
+          path: reports/report.txt
+          retention-days: 5
+          if-no-files-found: error
+
+
+  read-report:
+    needs: generate-report
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download report artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: demo-report
+          path: demo-report
+
+      - name: Display downloaded report
+        run: |
+          echo "Contents of the downloaded report:"
+          cat demo-report/report.txt
+
+
+
