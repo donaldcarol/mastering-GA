@@ -1,0 +1,77 @@
+name: React Build and Deploy with Artifacts
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: 13-caching/react-app
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24.x"
+          cache: npm
+          cache-dependency-path: 13-caching/react-app/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build project
+        run: npm run build
+
+      - name: Verify build directory
+        run: |
+          echo "Build contents:"
+          find build -maxdepth 2 -type f
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: react-build
+          path: 13-caching/react-app/build
+          retention-days: 5
+          if-no-files-found: error
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions: {}
+
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: react-build
+          path: deployment-package
+
+      - name: Verify deployment package
+        run: |
+          echo "Downloaded files:"
+          find deployment-package -maxdepth 2 -type f
+
+          if [[ ! -f deployment-package/index.html ]]; then
+            echo "::error::index.html was not found"
+            exit 1
+          fi
+
+          echo "index.html exists."
+
+      - name: Deploy to server
+        run: |
+          echo "Application package is ready for deployment."
+          echo "Simulating deployment..."
