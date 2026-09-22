@@ -18,6 +18,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
 
+      - name: Verify package-lock.json
+        run: |
+          if [[ ! -f package-lock.json ]]; then
+            echo "::error::package-lock.json was not found"
+            exit 1
+          fi
+
+
+          echo "package-lock.json exists."
+
       - name: Set up Node.js
         uses: actions/setup-node@v7
         with:
