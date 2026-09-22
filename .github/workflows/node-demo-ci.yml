@@ -1,0 +1,67 @@
+name: Node Demo CI
+
+on:
+  workflow_dispatch:
+
+  push:
+    paths:
+      - "node-demo/**"
+      - ".github/workflows/node-demo-ci.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: node-demo
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: node-demo/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build application
+        run: npm run build
+
+      - name: Verify build output
+        run: |
+          test -f dist/app.js
+          node dist/app.js
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: node-demo-build
+          path: node-demo/dist/app.js
+          if-no-files-found: error
+          retention-days: 5
+
+  verify-artifact:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: node-demo-build
+          path: downloaded-app
+
+      - name: Run downloaded application
+        run: node downloaded-app/app.js
