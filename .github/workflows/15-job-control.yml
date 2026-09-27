@@ -1,0 +1,69 @@
+name: Job Control Demo
+
+on:
+  workflow_dispatch:
+    inputs:
+      simulate_failure:
+        description: "Simulate operation failure?"
+        required: true
+        type: boolean
+        default: false
+
+permissions: {}
+
+jobs:
+  operation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Perform operation
+        env:
+          SIMULATE_FAILURE: ${{ inputs.simulate_failure }}
+        run: |
+          echo "Starting the main operation."
+
+          if [[ "$SIMULATE_FAILURE" == "true" ]]; then
+            echo "::error::The main operation failed."
+            exit 1
+          fi
+
+          echo "The main operation completed successfully."
+
+  next-operation:
+    needs: operation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Continue processing
+        run: |
+          echo "The previous job succeeded."
+          echo "Continuing with the next operation."
+
+  failure-handler:
+    needs: operation
+    if: ${{ failure() }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Handle operation failure
+        run: |
+          echo "The operation job failed."
+          echo "Collecting diagnostics..."
+          echo "A production workflow could send a notification here."
+
+  final-summary:
+    needs:
+      - operation
+      - next-operation
+      - failure-handler
+
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Show job results
+        run: |
+          echo "Operation result: ${{ needs.operation.result }}"
+          echo "Next operation result: ${{ needs.next-operation.result }}"
+          echo "Failure handler result: ${{ needs.failure-handler.result }}"
