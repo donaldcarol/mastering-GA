@@ -26,7 +26,7 @@ permissions: {}
 
 concurrency:
   group: concurrency-demo-${{ inputs.target }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   simulate-operation:
