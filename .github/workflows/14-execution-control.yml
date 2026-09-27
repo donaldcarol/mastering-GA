@@ -1,0 +1,50 @@
+name: Execution Control Demo
+
+on:
+  workflow_dispatch:
+    inputs:
+      simulate_failure:
+        description: "Simulate a command failure?"
+        required: true
+        type: boolean
+        default: false
+
+permissions: {}
+
+jobs:
+  error-demo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Start operation
+        run: |
+          echo "The operation has started."
+
+      - name: Run potentially failing command
+        env:
+          SIMULATE_FAILURE: ${{ inputs.simulate_failure }}
+        run: |
+          echo "Simulate failure: $SIMULATE_FAILURE"
+
+          if [[ "$SIMULATE_FAILURE" == "true" ]]; then
+            echo "::error::The simulated operation failed."
+            exit 1
+          fi
+
+          echo "The simulated operation succeeded."
+
+      - name: Continue normal processing
+        run: |
+          echo "This step runs only if previous steps succeeded."
+
+      - name: Handle failure
+        if: ${{ failure() }}
+        run: |
+          echo "A previous step failed."
+          echo "Here we could send a notification or collect diagnostics."
+
+      - name: Cleanup
+        if: ${{ always() }}
+        run: |
+          echo "This cleanup step runs regardless of success or failure."
