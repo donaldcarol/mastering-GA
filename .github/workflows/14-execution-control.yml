@@ -22,6 +22,8 @@ jobs:
           echo "The operation has started."
 
       - name: Run potentially failing command
+        id: risky_step
+        continue-on-error: true
         env:
           SIMULATE_FAILURE: ${{ inputs.simulate_failure }}
         run: |
@@ -36,15 +38,26 @@ jobs:
 
       - name: Continue normal processing
         run: |
-          echo "This step runs only if previous steps succeeded."
+          echo "The workflow continues after the tolerated error."
 
-      - name: Handle failure
+      - name: Handle job failure
         if: ${{ failure() }}
         run: |
-          echo "A previous step failed."
-          echo "Here we could send a notification or collect diagnostics."
+          echo "This will not run for a tolerated step failure."
+
+      - name: Handle tolerated step failure
+        if: ${{ steps.risky_step.outcome == 'failure' }}
+        run: |
+          echo "The risky step failed, but the failure was tolerated."
+          echo "Here we could record a warning or use a fallback."
+
+      - name: Show step status
+        if: ${{ always() }}
+        run: |
+          echo "Outcome: ${{ steps.risky_step.outcome }}"
+          echo "Conclusion: ${{ steps.risky_step.conclusion }}"
 
       - name: Cleanup
         if: ${{ always() }}
         run: |
-          echo "This cleanup step runs regardless of success or failure."
+          echo "Cleanup completed."
