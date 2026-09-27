@@ -1,0 +1,57 @@
+name: Concurrency Demo
+
+run-name: Concurrency - ${{ inputs.target }} - ${{ inputs.wait_seconds }} seconds
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Resource on which the operation runs"
+        required: true
+        type: choice
+        options:
+          - server01
+          - server02
+
+      wait_seconds:
+        description: "Simulated operation duration"
+        required: true
+        type: choice
+        default: "120"
+        options:
+          - "60"
+          - "120"
+
+permissions: {}
+
+concurrency:
+  group: concurrency-demo-${{ inputs.target }}
+  cancel-in-progress: false
+
+jobs:
+  simulate-operation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Show operation details
+        env:
+          TARGET: ${{ inputs.target }}
+          WAIT_SECONDS: ${{ inputs.wait_seconds }}
+        run: |
+          echo "Run ID: $GITHUB_RUN_ID"
+          echo "Target: $TARGET"
+          echo "Duration: $WAIT_SECONDS seconds"
+          echo "Started at: $(date -u)"
+
+      - name: Simulate long-running operation
+        env:
+          TARGET: ${{ inputs.target }}
+          WAIT_SECONDS: ${{ inputs.wait_seconds }}
+        run: |
+          echo "Starting operation on $TARGET..."
+          sleep "$WAIT_SECONDS"
+          echo "Operation on $TARGET completed."
+
+      - name: Show completion time
+        run: echo "Completed at $(date -u)"
