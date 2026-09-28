@@ -19,6 +19,9 @@ jobs:
           fi
           echo "Staging: $APP_URL"
 
+      - name: Simulează un eșec
+        run: exit 1
+
   production:
     needs: staging
     runs-on: ubuntu-latest
