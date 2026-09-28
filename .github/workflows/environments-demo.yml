@@ -21,6 +21,15 @@ jobs:
 
      # - name: Simulează un eșec
      #   run: exit 1
+      - name: Verifică secretul
+        env:
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+        run: |
+          if [ -z "$DEPLOY_TOKEN" ]; then
+            echo "::error::DEPLOY_TOKEN lipsește"
+            exit 1
+          fi
+          echo "DEPLOY_TOKEN este disponibil"
 
   production:
     needs: staging
@@ -37,3 +46,13 @@ jobs:
             exit 1
           fi
           echo "Production: $APP_URL"
+
+      - name: Verifică secretul
+        env:
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+        run: |
+          if [ -z "$DEPLOY_TOKEN" ]; then
+            echo "::error::DEPLOY_TOKEN lipsește"
+            exit 1
+          fi
+          echo "DEPLOY_TOKEN este disponibil"
