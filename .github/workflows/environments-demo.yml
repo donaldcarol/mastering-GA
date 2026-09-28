@@ -11,8 +11,12 @@ jobs:
       matrix:
         target: [staging, production]
 
-        
+
     environment: ${{ matrix.target }}
+
+    concurrency:
+      group: environments-demo-${{ matrix.target }}
+      cancel-in-progress: false
 
     steps:
       - name: Verifică și afișează URL
