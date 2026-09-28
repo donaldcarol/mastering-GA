@@ -1,0 +1,23 @@
+name: Environments demo
+
+on:
+  workflow_dispatch:
+
+jobs:
+  show-url:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        target: [staging, production]
+
+    environment: ${{ matrix.target }}
+
+    steps:
+      - name: Afișează environment și URL
+        env:
+          TARGET: ${{ matrix.target }}
+          APP_URL: ${{ vars.APP_URL }}
+        run: |
+          echo "Environment: $TARGET"
+          echo "APP_URL: $APP_URL"
