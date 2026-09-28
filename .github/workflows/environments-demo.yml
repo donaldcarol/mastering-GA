@@ -6,18 +6,24 @@ on:
 jobs:
   show-url:
     runs-on: ubuntu-latest
-
     strategy:
+      fail-fast: false
       matrix:
         target: [staging, production]
 
+        
     environment: ${{ matrix.target }}
 
     steps:
-      - name: Afișează environment și URL
+      - name: Verifică și afișează URL
         env:
           TARGET: ${{ matrix.target }}
           APP_URL: ${{ vars.APP_URL }}
         run: |
+          if [ -z "$APP_URL" ]; then
+            echo "::error::APP_URL lipsește pentru $TARGET"
+            exit 1
+          fi
+
           echo "Environment: $TARGET"
           echo "APP_URL: $APP_URL"
