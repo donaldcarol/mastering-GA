@@ -4,30 +4,33 @@ on:
   workflow_dispatch:
 
 jobs:
-  show-url:
+  staging:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        target: [staging, production]
-
-
-    environment: ${{ matrix.target }}
-
-    concurrency:
-      group: environments-demo-${{ matrix.target }}
-      cancel-in-progress: false
+    environment: staging
 
     steps:
-      - name: Verifică și afișează URL
+      - name: Verifică staging
         env:
-          TARGET: ${{ matrix.target }}
           APP_URL: ${{ vars.APP_URL }}
         run: |
           if [ -z "$APP_URL" ]; then
-            echo "::error::APP_URL lipsește pentru $TARGET"
+            echo "::error::APP_URL lipsește pentru staging"
             exit 1
           fi
+          echo "Staging: $APP_URL"
 
-          echo "Environment: $TARGET"
-          echo "APP_URL: $APP_URL"
+  production:
+    needs: staging
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Verifică production
+        env:
+          APP_URL: ${{ vars.APP_URL }}
+        run: |
+          if [ -z "$APP_URL" ]; then
+            echo "::error::APP_URL lipsește pentru production"
+            exit 1
+          fi
+          echo "Production: $APP_URL"
