@@ -9,8 +9,12 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - name: Verifică accesul la issues
-        env:
-          GH_TOKEN: ${{ github.token }}
-          GH_REPO: ${{ github.repository }}
-        run: gh api "repos/$GH_REPO/issues"
+    - name: Creează un issue de exercițiu
+      env:
+        GH_TOKEN: ${{ github.token }}
+        GH_REPO: "${{ github.repository }}"
+      run: |
+          gh issue create \
+            --repo "$GH_REPO" \
+            --title "Exercițiu permissions" \
+            --body "Issue de test pentru lecția GitHub Actions."
