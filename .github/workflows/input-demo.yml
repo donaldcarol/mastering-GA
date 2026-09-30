@@ -1,0 +1,26 @@
+name: Input demo
+
+on:
+  workflow_dispatch:
+    inputs:
+      text:
+        description: Text de afișat
+        required: true
+        default: 'Actualizare $(echo TEST)'
+        type: string
+
+permissions: {}
+
+jobs:
+  demo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Exemplu nesigur — doar pentru demonstrație
+        run: |
+          echo "${{ inputs.text }}"
+
+      - name: Exemplu sigur
+        env:
+          USER_TEXT: ${{ inputs.text }}
+        run: |
+          printf '%s\n' "$USER_TEXT"
