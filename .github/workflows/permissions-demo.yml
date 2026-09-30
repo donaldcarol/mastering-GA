@@ -3,7 +3,8 @@ name: Permissions demo
 on:
   workflow_dispatch:
 
-permissions: {}
+permissions:
+  issues: write
 
 jobs:
   check:
