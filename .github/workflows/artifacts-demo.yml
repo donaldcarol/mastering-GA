@@ -13,10 +13,12 @@ jobs:
         run: |
           mkdir -p reports
           cd reports
-          echo "This is a sample report." > report.txt
-          echo "Report generated on $(date)" >> report.txt
-          echo ${GITHUB_REPOSITORY} >> report.txt
-          echo ${GITHUB_SHA} >> report.txt
+          {
+          echo "This is a sample report." 
+          echo "Report generated on $(date)" 
+          echo ${GITHUB_REPOSITORY} 
+          echo ${GITHUB_SHA} 
+          } > reports/report.txt
 
       - name: Upload report as artifact
         uses: actions/upload-artifact@v7
