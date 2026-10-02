@@ -1,6 +1,6 @@
 name: 02 - Workflow Events
 
-description: Learn about different workflow events in Github Actions
+#description: Learn about different workflow events in Github Actions
 
 on:
   push:
