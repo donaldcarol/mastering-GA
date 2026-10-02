@@ -1,0 +1,20 @@
+name: Listează artifacts
+
+on:
+  workflow_dispatch:
+
+permissions:
+  actions: read
+
+jobs:
+  list:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Listează artifactele repository-ului
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          printf 'ARTIFACT_ID\tNAME\tRUN_ID\tEXPIRED\n'
+          gh api --paginate "repos/$GH_REPO/actions/artifacts?per_page=100" \
+            --jq '.artifacts[] | [.id, .name, .workflow_run.id, .expired] | @tsv'
