@@ -1,5 +1,5 @@
 name: Building Blocks
-description: Learn the fundamental building blocks of Github Actions
+#description: Learn the fundamental building blocks of Github Actions
 
 on:
   push:
