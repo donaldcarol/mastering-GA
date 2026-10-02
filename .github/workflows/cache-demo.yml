@@ -1,0 +1,31 @@
+name: Cache demo
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  demo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Restaurează cache-ul
+        id: cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: demo-cache
+          key: ${{ runner.os }}-lectie-cache-v1
+
+      - name: Generează fișierul dacă lipsește cache-ul
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p demo-cache
+          date -u > demo-cache/generated-at.txt
+          echo "Am generat fișierul."
+
+      - name: Afișează rezultatul
+        env:
+          CACHE_HIT: ${{ steps.cache.outputs.cache-hit }}
+        run: |
+          echo "Cache hit exact: ${CACHE_HIT:-false}"
+          cat demo-cache/generated-at.txt
