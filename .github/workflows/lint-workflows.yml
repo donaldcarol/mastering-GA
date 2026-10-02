@@ -1,0 +1,38 @@
+name: Validate workflows
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  actionlint:
+    name: actionlint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descarcă repository-ul
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Instalează actionlint
+        env:
+          GH_TOKEN: ${{ github.token }}
+        working-directory: ${{ runner.temp }}
+        run: |
+          gh release download v1.7.12 \
+            --repo rhysd/actionlint \
+            --pattern actionlint_1.7.12_linux_amd64.tar.gz
+
+          gh attestation verify \
+            actionlint_1.7.12_linux_amd64.tar.gz \
+            --repo rhysd/actionlint
+
+          tar -xzf actionlint_1.7.12_linux_amd64.tar.gz actionlint
+
+      - name: Verifică workflow-urile
+        run: '"$RUNNER_TEMP/actionlint" -color'
