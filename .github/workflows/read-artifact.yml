@@ -1,0 +1,27 @@
+name: Citește artifact din altă rulare
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_run_id:
+        description: ID-ul rulării care a creat raportul
+        required: true
+        type: string
+
+permissions:
+  actions: read
+
+jobs:
+  read:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descarcă raportul
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: raport-test
+          run-id: ${{ inputs.source_run_id }}
+          github-token: ${{ github.token }}
+          path: downloaded
+
+      - name: Citește raportul
+        run: cat downloaded/report.txt

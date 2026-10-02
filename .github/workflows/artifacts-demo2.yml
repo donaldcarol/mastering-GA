@@ -22,6 +22,7 @@ jobs:
 
   read-report:
     needs: build
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
       - name: Descarcă raportul
