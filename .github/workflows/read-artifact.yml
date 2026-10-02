@@ -23,5 +23,8 @@ jobs:
           github-token: ${{ github.token }}
           path: downloaded
 
+      - name: Afișează fișierele descărcate
+        run: find downloaded -type f
+
       - name: Citește raportul
         run: cat downloaded/report.txt
