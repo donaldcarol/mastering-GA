@@ -18,7 +18,7 @@ jobs:
             echo "Report generated on $(date)"
             echo "${GITHUB_REPOSITORY}"
             echo "${GITHUB_SHA}"
-          } > report.txt
+          } > reports/report.txt
 
       - name: Upload report as artifact
         uses: actions/upload-artifact@v7
