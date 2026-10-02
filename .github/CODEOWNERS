@@ -1,0 +1,5 @@
+# Responsabil pentru workflow-uri
+/.github/workflows/ @donaldcarol
+
+# Responsabil pentru regulile de ownership
+/.github/CODEOWNERS @donaldcarol
