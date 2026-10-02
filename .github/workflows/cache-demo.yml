@@ -14,7 +14,17 @@ jobs:
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: demo-cache
-          key: ${{ runner.os }}-lectie-cache-v2
+          key: ${{ runner.os }}-lectie-cache-v3
+          restore-keys: |
+            ${{ runner.os }}-lectie-cache-
+
+      - name: Verifică fișierul restaurat
+        run: |
+          if [ -f demo-cache/generated-at.txt ]; then
+            cat demo-cache/generated-at.txt
+          else
+            echo "Nu a fost restaurat niciun fișier."
+          fi
 
       - name: Generează fișierul dacă lipsește cache-ul
         if: steps.cache.outputs.cache-hit != 'true'
