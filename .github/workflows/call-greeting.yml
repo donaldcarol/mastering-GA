@@ -4,6 +4,12 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      person:
+        description: Pe cine salutăm?
+        required: true
+        default: Donald
+        type: string
 
 permissions: {}
 
@@ -11,5 +17,6 @@ jobs:
   call-greeting:
     uses: ./.github/workflows/reusable-greeting.yml
     with:
-      person: Donald
+      person: ${{ inputs.person || 'prietene' }}
+
       
