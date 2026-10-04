@@ -1,0 +1,14 @@
+name: Salut reutilizabil
+
+on:
+  workflow_call:
+
+permissions: {}
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Afișează salutul
+        run: echo "Salut din workflow-ul reutilizabil!"
+        

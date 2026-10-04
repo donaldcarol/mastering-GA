@@ -1,0 +1,14 @@
+name: Apelează salutul
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  call-greeting:
+    uses: ./.github/workflows/reusable-greeting.yml
+
+    
