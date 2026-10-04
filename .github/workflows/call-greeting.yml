@@ -10,5 +10,6 @@ permissions: {}
 jobs:
   call-greeting:
     uses: ./.github/workflows/reusable-greeting.yml
-
-    
+    with:
+      person: Donald
+      
