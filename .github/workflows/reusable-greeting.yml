@@ -2,13 +2,21 @@ name: Salut reutilizabil
 
 on:
   workflow_call:
+    inputs:
+      person:
+        description: Persoana salutată
+        required: false
+        type: string
+        default: prietene
 
+        
 permissions: {}
 
 jobs:
   greet:
     runs-on: ubuntu-latest
     steps:
-      - name: Afișează salutul
-        run: echo "Salut din workflow-ul reutilizabil!"
-        
+    - name: Afișează salutul
+      env:
+        PERSON: ${{ inputs.person }}
+      run: printf 'Salut, %s!\n' "$PERSON"
