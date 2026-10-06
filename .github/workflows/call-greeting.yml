@@ -19,4 +19,14 @@ jobs:
       person: ${{ inputs.person || 'prietene' }}
     secrets:
       demo_token: ${{ secrets.DEMO_TOKEN }}
+
+  show-result:
+    needs: call-greeting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Afișează outputul primit
+        env:
+          MESSAGE: ${{ needs.call-greeting.outputs.message }}
+        run: >-
+          printf 'Output primit: %s\n' "$MESSAGE"
       

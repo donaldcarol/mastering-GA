@@ -11,23 +11,41 @@ on:
     secrets:
       demo_token:
         required: true
-
+    outputs:
+      message:
+        description: Salutul generat
+        value: ${{ jobs.greet.outputs.message }}
         
 permissions: {}
 
 jobs:
   greet:
     runs-on: ubuntu-latest
-    steps:
-    - name: Afișează salutul
-      env:
-        PERSON: ${{ inputs.person }}
-      run: printf 'Salut, %s!\n' "$PERSON"
 
-    - name: Verifică secretul primit
-      env:
+    outputs:
+      message: ${{ steps.generate.outputs.message }}
+
+    steps:
+      - name: Generează salutul
+        id: generate
+        env:
+          PERSON: ${{ inputs.person }}
+        run: |
+          MESSAGE="Salut, $PERSON!"
+          printf '%s\n' "$MESSAGE"
+
+          {
+            echo 'message<<EOF_GREETING'
+            printf '%s\n' "$MESSAGE"
+            echo 'EOF_GREETING'
+          } >> "$GITHUB_OUTPUT"
+
+      # Aici păstrezi pasul „Verifică secretul primit”
+
+      - name: Verifică secretul primit
+        env:
           DEMO_TOKEN: ${{ secrets.demo_token }}
-      run: |
+        run: |
           if [ -z "$DEMO_TOKEN" ]; then
             echo "::error::Secretul demo_token lipsește"
             exit 1
