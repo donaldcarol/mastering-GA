@@ -12,11 +12,11 @@ on:
         type: string
 
 permissions: {}
-
 jobs:
   call-greeting:
     uses: ./.github/workflows/reusable-greeting.yml
     with:
       person: ${{ inputs.person || 'prietene' }}
-
+    secrets:
+      demo_token: ${{ secrets.DEMO_TOKEN }}
       

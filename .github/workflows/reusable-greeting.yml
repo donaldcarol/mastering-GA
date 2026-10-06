@@ -8,6 +8,9 @@ on:
         required: false
         type: string
         default: prietene
+    secrets:
+      demo_token:
+        required: true
 
         
 permissions: {}
@@ -20,3 +23,13 @@ jobs:
       env:
         PERSON: ${{ inputs.person }}
       run: printf 'Salut, %s!\n' "$PERSON"
+
+    - name: Verifică secretul primit
+      env:
+          DEMO_TOKEN: ${{ secrets.demo_token }}
+      run: |
+          if [ -z "$DEMO_TOKEN" ]; then
+            echo "::error::Secretul demo_token lipsește"
+            exit 1
+          fi
+          echo "Secretul demo_token este disponibil"
