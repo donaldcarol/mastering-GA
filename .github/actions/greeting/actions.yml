@@ -1,0 +1,16 @@
+name: Salut
+description: Afișează un salut pentru persoana primită
+
+inputs:
+  person:
+    description: Pe cine salutăm
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Afișează salutul
+      shell: bash
+      env:
+        PERSON: ${{ inputs.person }}
+      run: printf 'Salut, %s!\n' "$PERSON"

@@ -1,0 +1,21 @@
+name: Demo composite action
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  demo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descarcă repository-ul
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - name: Apelează acțiunea locală
+        uses: ./.github/actions/greeting
+        with:
+          person: Donald
