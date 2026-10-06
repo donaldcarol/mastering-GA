@@ -14,3 +14,8 @@ runs:
       env:
         PERSON: ${{ inputs.person }}
       run: printf 'Salut, %s!\n' "$PERSON"
+    - name: Afișează runnerul
+      shell: bash
+      env:
+        RUNNER_OS: ${{ runner.os }}
+      run: "printf 'Rulez pe: %s\\n' \"$RUNNER_OS\""
