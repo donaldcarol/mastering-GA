@@ -1,0 +1,39 @@
+name: Demo PostgreSQL service
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  test-db:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: demo
+          POSTGRES_PASSWORD: demo-password
+          POSTGRES_DB: demo_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U demo -d demo_db"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Instalează clientul PostgreSQL
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+
+      - name: Execută o interogare
+        env:
+          PGPASSWORD: demo-password
+        run: |
+          psql -h localhost -p 5432 -U demo -d demo_db \
+            -v ON_ERROR_STOP=1 \
+            -c "SELECT 'Salut din PostgreSQL!' AS mesaj;"
