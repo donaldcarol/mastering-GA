@@ -1,21 +1,34 @@
 name: Salut
-description: Afișează un salut pentru persoana primită
+description: Generează și afișează un salut
 
 inputs:
   person:
     description: Pe cine salutăm
     required: true
 
+outputs:
+  message:
+    description: Salutul generat
+    value: ${{ steps.generate.outputs.message }}
+
 runs:
   using: composite
   steps:
-    - name: Afișează salutul
+    - name: Generează salutul
+      id: generate
       shell: bash
       env:
         PERSON: ${{ inputs.person }}
-      run: printf 'Salut, %s!\n' "$PERSON"
+      run: |
+        MESSAGE="Salut, $PERSON!"
+        printf '%s\n' "$MESSAGE"
+        printf 'message=%s\n' "$MESSAGE" >> "$GITHUB_OUTPUT"
+
     - name: Afișează runnerul
       shell: bash
       env:
         RUNNER_OS: ${{ runner.os }}
-      run: "printf 'Rulez pe: %s\\n' \"$RUNNER_OS\""
+      run: |
+        printf 'Rulez pe: %s\n' "$RUNNER_OS"
+
+      

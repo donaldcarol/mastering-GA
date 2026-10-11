@@ -16,6 +16,13 @@ jobs:
           persist-credentials: false
 
       - name: Apelează acțiunea locală
+        id: greeting
         uses: ./.github/actions/greeting
         with:
           person: Donald
+
+      - name: Citește outputul acțiunii
+        env:
+          MESSAGE: ${{ steps.greeting.outputs.message }}
+        run: |
+          printf 'Output primit: %s\n' "$MESSAGE"
