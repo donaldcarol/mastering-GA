@@ -6,6 +6,10 @@ inputs:
     description: Pe cine salutăm
     required: true
 
+  demo-token:
+    description: Token pentru exercițiu
+    required: true
+
 outputs:
   message:
     description: Salutul generat
@@ -30,5 +34,16 @@ runs:
         RUNNER_OS: ${{ runner.os }}
       run: |
         printf 'Rulez pe: %s\n' "$RUNNER_OS"
+
+    - name: Verifică tokenul primit
+      shell: bash
+      env:
+        DEMO_TOKEN: ${{ inputs.demo-token }}
+      run: |
+        if [ -z "$DEMO_TOKEN" ]; then
+          echo "::error::Tokenul lipsește"
+          exit 1
+        fi
+        echo "Tokenul este disponibil"
 
       

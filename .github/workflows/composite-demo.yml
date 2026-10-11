@@ -20,6 +20,8 @@ jobs:
         uses: ./.github/actions/greeting
         with:
           person: Donald
+          demo-token: ${{ secrets.DEMO_TOKEN }}
+          
 
       - name: Citește outputul acțiunii
         env:
