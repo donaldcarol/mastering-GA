@@ -1,0 +1,38 @@
+name: Publică imaginea CI
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      IMAGE: ghcr.io/donaldcarol/ci-tools:1.0
+
+    steps:
+      - name: Descarcă repository-ul
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - name: Autentificare în GHCR
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_USER: ${{ github.actor }}
+        run: |
+          printf '%s' "$GH_TOKEN" |
+            docker login ghcr.io --username "$GH_USER" --password-stdin
+
+      - name: Construiește imaginea
+        run: |
+          docker build \
+            --file .github/images/ci-tools/Dockerfile \
+            --tag "$IMAGE" \
+            .github/images/ci-tools
+
+      - name: Publică imaginea
+        run: docker push "$IMAGE"
