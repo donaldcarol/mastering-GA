@@ -20,8 +20,26 @@ jobs:
 
       - name: Execută testele
         id: run-tests
-        run: python -m unittest -v test_calculator
+        run: |
+          mkdir -p reports
+          python -m unittest -v test_calculator > reports/tests.txt 2>&1
 
+      
+      - name: Afișează raportul în log
+        if: always()
+        run: cat reports/tests.txt
+
+      - name: Salvează raportul ca artifact
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: raport-teste
+          path: reports/tests.txt
+          retention-days: 7
+          if-no-files-found: error  
+
+
+          
       - name: Scrie raportul
         if: always()
         env:
