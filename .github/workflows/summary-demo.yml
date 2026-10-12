@@ -14,7 +14,7 @@ jobs:
         id: check-git
         run: |
           git --version
-          exit 1
+          
 
       - name: Scrie raportul
         if: always()
