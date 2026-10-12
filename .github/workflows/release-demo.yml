@@ -6,7 +6,7 @@ on:
       - 'v*'
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   show-version:
@@ -19,3 +19,24 @@ jobs:
         run: |
           printf 'Versiune: %s\n' "$VERSION"
           printf 'Commit: %s\n' "$COMMIT"
+
+      - name: Generează fișierul versiunii
+        env:
+          VERSION: ${{ github.ref_name }}
+          COMMIT: ${{ github.sha }}
+        run: |
+          {
+            printf 'Versiune: %s\n' "$VERSION"
+            printf 'Commit: %s\n' "$COMMIT"
+          } > version.txt
+
+      - name: Creează GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          VERSION: ${{ github.ref_name }}
+        run: |
+          gh release create "$VERSION" version.txt \
+            --verify-tag \
+            --title "Versiunea $VERSION" \
+            --notes "Release de exercițiu creat prin GitHub Actions."
