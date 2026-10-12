@@ -1,0 +1,23 @@
+name: Folosește imaginea CI
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  check-tools:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/donaldcarol/ci-tools:1.0
+
+    steps:
+      - name: Verifică uneltele din imagine
+        run: |
+          python --version
+          git --version
+          curl --version
+
+      - name: Execută Python
+        run: |
+          python -c "print('Salut din imaginea noastră!')"
