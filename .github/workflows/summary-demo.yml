@@ -12,7 +12,9 @@ jobs:
     steps:
       - name: Verifică Git
         id: check-git
-        run: git --version
+        run: |
+          git --version
+          exit 1
 
       - name: Scrie raportul
         if: always()
