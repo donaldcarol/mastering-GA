@@ -1,0 +1,23 @@
+name: Demo job summary
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  demo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generează raportul
+        run: |
+          {
+            echo '## Rezultatul verificării'
+            echo ''
+            echo '| Verificare | Rezultat |'
+            echo '|---|---|'
+            echo '| Conectare la baza de date | ✅ Succes |'
+            echo '| Unelte disponibile | ✅ Succes |'
+            echo ''
+            echo 'Acesta este un raport demonstrativ.'
+          } >> "$GITHUB_STEP_SUMMARY"
