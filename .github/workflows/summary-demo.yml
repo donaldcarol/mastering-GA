@@ -8,16 +8,21 @@ permissions: {}
 jobs:
   demo:
     runs-on: ubuntu-latest
+       
     steps:
-      - name: Generează raportul
+      - name: Verifică Git
+        id: check-git
+        run: git --version
+
+      - name: Scrie raportul
+        if: always()
+        env:
+          RESULT: ${{ steps.check-git.outcome }}
         run: |
           {
-            echo '## Rezultatul verificării'
+            echo '## Verificarea uneltelor'
             echo ''
-            echo '| Verificare | Rezultat |'
+            echo '| Unealtă | Rezultat |'
             echo '|---|---|'
-            echo '| Conectare la baza de date | ✅ Succes |'
-            echo '| Unelte disponibile | ✅ Succes |'
-            echo ''
-            echo 'Acesta este un raport demonstrativ.'
+            printf '| Git | %s |\n' "$RESULT"
           } >> "$GITHUB_STEP_SUMMARY"
