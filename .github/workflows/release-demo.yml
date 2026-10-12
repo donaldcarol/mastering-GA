@@ -1,0 +1,21 @@
+name: Demo versiune
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+jobs:
+  show-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Afișează versiunea
+        env:
+          VERSION: ${{ github.ref_name }}
+          COMMIT: ${{ github.sha }}
+        run: |
+          printf 'Versiune: %s\n' "$VERSION"
+          printf 'Commit: %s\n' "$COMMIT"
