@@ -1,0 +1,36 @@
+name: Demo teste Python
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/donaldcarol/ci-tools:1.0
+
+    steps:
+      - name: Descarcă repository-ul
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - name: Execută testele
+        id: run-tests
+        run: python -m unittest -v test_calculator
+
+      - name: Scrie raportul
+        if: always()
+        env:
+          RESULT: ${{ steps.run-tests.outcome }}
+        run: |
+          {
+            echo '## Teste Python'
+            echo ''
+            echo '| Verificare | Rezultat |'
+            echo '|---|---|'
+            printf '| Teste calculator | %s |\n' "$RESULT"
+          } >> "$GITHUB_STEP_SUMMARY"
