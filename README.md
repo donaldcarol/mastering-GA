@@ -1,110 +1,110 @@
 # Mastering GitHub Actions
 
-Repository de laborator pentru învățarea GitHub Actions: de la primele joburi până la teste automate, containere, publicarea imaginilor și GitHub Releases.
+A hands-on laboratory for learning GitHub Actions, from basic jobs to automated tests, containers, image publishing, and GitHub Releases.
 
-Exemplele sunt exerciții independente. Unele simulează operații sau demonstrează intenționat comportamente nesigure; nu reprezintă un pipeline gata pentru producție. Configurarea branch protection, environments și secrets se face în GitHub și nu este inclusă integral în fișierele repository-ului.
+The examples are independent exercises. Some simulate operations or deliberately demonstrate unsafe behavior; they are not production-ready pipelines. Branch protection, environments, and secrets are configured in GitHub and are not fully represented by the repository files.
 
-## Pornire rapidă
+## Quick start
 
-1. Deschide tabul **Actions** al repository-ului.
-2. Selectează workflow-ul dorit după nume.
-3. Dacă definește `workflow_dispatch`, apasă **Run workflow** și completează inputurile.
-4. Verifică joburile, logurile, pagina **Summary** și secțiunea **Artifacts**.
+1. Open the repository's **Actions** tab.
+2. Select the workflow you want to explore.
+3. If it defines `workflow_dispatch`, click **Run workflow** and complete its inputs.
+4. Review the jobs, logs, **Summary** page, and **Artifacts** section.
 
-Workflow-urile cu `workflow_call` sunt apelate de alte workflow-uri. `release-demo.yml` pornește la publicarea unui tag `v*`, nu dintr-un buton de rulare manuală.
+Workflows with `workflow_call` are called by other workflows. `release-demo.yml` runs when a `v*` tag is pushed; it does not have a manual run button.
 
-## Indexul exemplelor
+## Example index
 
-### Structură, events și controlul execuției
+### Structure, events, and execution control
 
-| Fișier | Ce demonstrează |
+| File | What it demonstrates |
 |---|---|
-| [01-building-blocks.yml](.github/workflows/01-building-blocks.yml) | Joburi, pași și comenzi; pornire la push, PR sau manual |
-| [02-workflow-events.yaml](.github/workflows/02-workflow-events.yaml) | Evenimentul care declanșează rularea |
-| [07-expressions.yaml](.github/workflows/07-expressions.yaml) | Context, expresii și pași condiționați de inputul `debug` |
-| [10-execution-flow.yml](.github/workflows/10-execution-flow.yml) | Dependențe între joburi și deploy simulat |
-| [14-execution-control.yml](.github/workflows/14-execution-control.yml) | `continue-on-error`, `outcome`, `conclusion`, cleanup și timeout |
-| [15-job-control.yml](.github/workflows/15-job-control.yml) | `needs`, tratarea eșecurilor și rezultatele joburilor |
-| [concurrency-demo.yml](.github/workflows/concurrency-demo.yml) | Gruparea rulărilor după resursă și anularea rulării anterioare |
+| [01-building-blocks.yml](.github/workflows/01-building-blocks.yml) | Jobs, steps, and commands; push, PR, and manual triggers |
+| [02-workflow-events.yaml](.github/workflows/02-workflow-events.yaml) | The event that triggered the run |
+| [07-expressions.yaml](.github/workflows/07-expressions.yaml) | Contexts, expressions, and steps controlled by the `debug` input |
+| [10-execution-flow.yml](.github/workflows/10-execution-flow.yml) | Job dependencies and simulated deployment |
+| [14-execution-control.yml](.github/workflows/14-execution-control.yml) | `continue-on-error`, `outcome`, `conclusion`, cleanup, and timeouts |
+| [15-job-control.yml](.github/workflows/15-job-control.yml) | `needs`, failure handling, and job results |
+| [concurrency-demo.yml](.github/workflows/concurrency-demo.yml) | Grouping runs by resource and canceling an earlier run |
 
-### Build, artifacts și cache
+### Builds, artifacts, and caching
 
-| Fișier | Ce demonstrează |
+| File | What it demonstrates |
 |---|---|
-| [node-demo-ci.yml](.github/workflows/node-demo-ci.yml) | Instalare, teste, build Node.js și transferul rezultatului între joburi |
-| [react-build.yml](.github/workflows/react-build.yml) | Build React, artifact și deploy simulat |
-| [13-caching.yml](.github/workflows/13-caching.yml) | Cache npm și build React |
-| [artifacts-demo.yml](.github/workflows/artifacts-demo.yml) | Exemplu inițial de generare și transfer al unui raport |
-| [artifacts-demo2.yml](.github/workflows/artifacts-demo2.yml) | Upload și download pentru artifactul `raport-test` |
-| [list-artifacts.yml](.github/workflows/list-artifacts.yml) | Listarea artifactelor repository-ului, inclusiv ID și run ID |
-| [read-artifact.yml](.github/workflows/read-artifact.yml) | Descărcarea `raport-test` dintr-o rulare indicată prin `source_run_id` |
-| [cache-demo.yml](.github/workflows/cache-demo.yml) | Cheie de cache, `restore-keys` și `cache-hit` |
+| [node-demo-ci.yml](.github/workflows/node-demo-ci.yml) | Dependency installation, Node.js tests and build, and transferring build output between jobs |
+| [react-build.yml](.github/workflows/react-build.yml) | React build, artifact upload, and simulated deployment |
+| [13-caching.yml](.github/workflows/13-caching.yml) | npm caching and a React build |
+| [artifacts-demo.yml](.github/workflows/artifacts-demo.yml) | The initial report generation and transfer example |
+| [artifacts-demo2.yml](.github/workflows/artifacts-demo2.yml) | Uploading and downloading the `raport-test` artifact |
+| [list-artifacts.yml](.github/workflows/list-artifacts.yml) | Listing repository artifacts, including artifact IDs and run IDs |
+| [read-artifact.yml](.github/workflows/read-artifact.yml) | Downloading `raport-test` from a run specified by `source_run_id` |
+| [cache-demo.yml](.github/workflows/cache-demo.yml) | Cache keys, `restore-keys`, and `cache-hit` |
 
-Pentru exercițiul de transfer al raportului, folosește `artifacts-demo2.yml`. Workflow-urile de build Node/React necesită directoarele aplicațiilor și fișierele de dependențe indicate în YAML.
+Use `artifacts-demo2.yml` for the report transfer exercise. The Node/React build workflows require the application directories and dependency files specified in their YAML files.
 
-### Environments, permissions și securitate
+### Environments, permissions, and security
 
-| Fișier | Ce demonstrează |
+| File | What it demonstrates |
 |---|---|
-| [environments-demo.yml](.github/workflows/environments-demo.yml) | Staging → production, variabile și secrets de environment |
-| [permissions-demo.yml](.github/workflows/permissions-demo.yml) | `issues: write`; creează efectiv un issue de exercițiu |
-| [input-demo.yml](.github/workflows/input-demo.yml) | Diferența dintre interpolarea nesigură în script și transmiterea prin `env` |
-| [lint-workflows.yml](.github/workflows/lint-workflows.yml) | Validarea workflow-urilor cu actionlint |
-| [CODEOWNERS](.github/CODEOWNERS) | Ownership pentru workflow-uri și fișierul CODEOWNERS |
+| [environments-demo.yml](.github/workflows/environments-demo.yml) | Staging → production, environment variables, and environment secrets |
+| [permissions-demo.yml](.github/workflows/permissions-demo.yml) | `issues: write`; actually creates a practice issue |
+| [input-demo.yml](.github/workflows/input-demo.yml) | Unsafe script interpolation compared with passing input through `env` |
+| [lint-workflows.yml](.github/workflows/lint-workflows.yml) | Workflow validation with actionlint |
+| [CODEOWNERS](.github/CODEOWNERS) | Ownership of workflow files and CODEOWNERS itself |
 
-`input-demo.yml` conține intenționat un pas nesigur. Nu reutiliza acel pas ca model pentru inputuri necontrolate.
+`input-demo.yml` deliberately includes an unsafe step. Do not reuse that step as a pattern for handling untrusted inputs.
 
-### Reusable workflows și composite actions
+### Reusable workflows and composite actions
 
-| Fișier | Ce demonstrează |
+| File | What it demonstrates |
 |---|---|
-| [call-greeting.yml](.github/workflows/call-greeting.yml) | Apelarea unui reusable workflow cu input, secret și output |
-| [reusable-greeting.yml](.github/workflows/reusable-greeting.yml) | Contractul `workflow_call`: inputs, secrets și outputs |
-| [call-hello.yml](.github/workflows/call-hello.yml) | Două apeluri ale aceluiași reusable workflow |
-| [reusable-hello.yml](.github/workflows/reusable-hello.yml) | Generarea și returnarea unui salut |
-| [composite-demo.yml](.github/workflows/composite-demo.yml) | Apelarea unei acțiuni locale și citirea outputului |
-| [greeting/action.yml](.github/actions/greeting/action.yml) | Composite action cu inputs, output și token primit explicit |
+| [call-greeting.yml](.github/workflows/call-greeting.yml) | Calling a reusable workflow with an input, a secret, and an output |
+| [reusable-greeting.yml](.github/workflows/reusable-greeting.yml) | The `workflow_call` interface: inputs, secrets, and outputs |
+| [call-hello.yml](.github/workflows/call-hello.yml) | Calling the same reusable workflow twice |
+| [reusable-hello.yml](.github/workflows/reusable-hello.yml) | Generating and returning a greeting |
+| [composite-demo.yml](.github/workflows/composite-demo.yml) | Calling a local action and reading its output |
+| [greeting/action.yml](.github/actions/greeting/action.yml) | A composite action with inputs, an output, and an explicitly supplied token |
 
-### Containere, rapoarte, teste și Releases
+### Containers, reports, tests, and releases
 
-| Fișier | Ce demonstrează |
+| File | What it demonstrates |
 |---|---|
-| [services-demo.yml](.github/workflows/services-demo.yml) | Client în containerul jobului și server PostgreSQL într-un service container |
-| [Dockerfile](.github/images/ci-tools/Dockerfile) | Imagine cu Python 3.12, Git și curl |
-| [publish-image.yml](.github/workflows/publish-image.yml) | Build și publicare în GHCR cu `packages: write` |
-| [use-ci-image.yml](.github/workflows/use-ci-image.yml) | Reutilizarea imaginii `ghcr.io/donaldcarol/ci-tools:1.0` |
-| [summary-demo.yml](.github/workflows/summary-demo.yml) | Raport Markdown bazat pe rezultatul unui pas |
-| [tests-demo.yml](.github/workflows/tests-demo.yml) | Teste Python, log, artifact și Summary inclusiv la eșec |
-| [release-demo.yml](.github/workflows/release-demo.yml) | Teste urmate de publicarea unui Release, doar la succes |
-| [calculator.py](calculator.py), [test_calculator.py](test_calculator.py) | Funcția de adunare și testele ei cu `unittest` |
+| [services-demo.yml](.github/workflows/services-demo.yml) | A client in the job container and a PostgreSQL server in a service container |
+| [Dockerfile](.github/images/ci-tools/Dockerfile) | An image containing Python 3.12, Git, and curl |
+| [publish-image.yml](.github/workflows/publish-image.yml) | Building and publishing to GHCR with `packages: write` |
+| [use-ci-image.yml](.github/workflows/use-ci-image.yml) | Reusing `ghcr.io/donaldcarol/ci-tools:1.0` |
+| [summary-demo.yml](.github/workflows/summary-demo.yml) | A Markdown report based on a step's outcome |
+| [tests-demo.yml](.github/workflows/tests-demo.yml) | Python tests, logs, an artifact, and a summary, including when tests fail |
+| [release-demo.yml](.github/workflows/release-demo.yml) | Running tests before publishing a release, only on success |
+| [calculator.py](calculator.py), [test_calculator.py](test_calculator.py) | An addition function and its `unittest` tests |
 
-## Conceptele de reținut
+## Key concepts
 
-### Workflow, job și step
+### Workflows, jobs, and steps
 
-- **Workflow**: fișierul YAML din `.github/workflows` care definește declanșarea și joburile.
-- **Job**: grup de pași executați pe un runner. Joburile pot rula în paralel dacă nu au dependențe.
-- **Step**: o comandă `run` sau apelul unei acțiuni prin `uses`.
-- **`needs`**: se referă la joburi, nu la pași. Ordinea în YAML nu stabilește ordinea execuției.
-- **`id`**: identifică un pas pentru referințe precum `steps.generate.outputs.message`.
+- **Workflow**: a YAML file in `.github/workflows` defining triggers and jobs.
+- **Job**: a group of steps executed on a runner. Jobs can run in parallel when they have no dependencies.
+- **Step**: a `run` command or an action called with `uses`.
+- **`needs`**: refers to jobs, not steps. Their order in YAML does not determine execution order.
+- **`id`**: identifies a step for references such as `steps.generate.outputs.message`.
 
-Implicit, un job cu `needs` așteaptă succesul joburilor de care depinde. Un job eșuat sau omis poate determina omiterea joburilor dependente; condițiile explicite pot modifica acest comportament.
+By default, a job with `needs` requires its dependencies to succeed. A failed or skipped job can cause dependent jobs to be skipped; explicit conditions can change this behavior.
 
-### Inputs, outputs și secrets
+### Inputs, outputs, and secrets
 
-| Expresie | Semnificație |
+| Expression | Meaning |
 |---|---|
-| `inputs.person` | Valoare primită ca input |
-| `steps.greeting.outputs.message` | Outputul unui pas din același job |
-| `needs.call-greeting.outputs.message` | Outputul unui job de care depindem |
-| `secrets.DEMO_TOKEN` | Secret disponibil rulării, conform regulilor de acces |
-| `vars.APP_URL` | Variabilă de configurare |
+| `inputs.person` | A supplied input value |
+| `steps.greeting.outputs.message` | Output from a step in the same job |
+| `needs.call-greeting.outputs.message` | Output from a job listed in `needs` |
+| `secrets.DEMO_TOKEN` | A secret available to the run under the applicable access rules |
+| `vars.APP_URL` | A configuration variable |
 
-Un reusable workflow expune valorile pe traseul **step output → job output → workflow output**.
+A reusable workflow exposes values through **step output → job output → workflow output**.
 
-O composite action grupează **pași**, iar un reusable workflow poate defini **joburi**. Apelul local `uses: ./.github/actions/greeting` indică directorul: GitHub caută automat în el `action.yml` sau `action.yaml`. Checkout-ul trebuie executat înaintea apelului acțiunii locale.
+A composite action groups **steps**, while a reusable workflow can define **jobs**. A local call such as `uses: ./.github/actions/greeting` points to a directory: GitHub automatically looks for `action.yml` or `action.yaml` inside it. Checkout must run before calling the local action.
 
-În exemplul composite, secretul este transmis explicit:
+In the composite example, the secret is supplied explicitly:
 
 ```yaml
 with:
@@ -112,115 +112,115 @@ with:
   demo-token: ${{ secrets.DEMO_TOKEN }}
 ```
 
-Secretul nu se transmite automat doar fiindcă există în repository. PR-urile din fork-uri nu primesc în mod normal repository secrets.
+A secret is not automatically passed to the action just because it exists in the repository. Pull requests from forks do not normally receive repository secrets.
 
-### Artifacts, cache, Summary, registry și Release
+### Artifacts, cache, summaries, registries, and releases
 
-| Mecanism | Rol |
+| Mechanism | Purpose |
 |---|---|
-| **Artifact** | Păstrează fișiere produse de o rulare; poate fi descărcat sau transmis altui job |
-| **Cache** | Accelerează rulările prin reutilizarea unor dependențe sau fișiere |
-| **Job Summary** | Afișează Markdown scris în fișierul indicat de `$GITHUB_STEP_SUMMARY` |
-| **Container registry** | Păstrează imagini Docker, de exemplu GHCR sau ACR |
-| **GitHub Release** | Publică o versiune asociată unui tag, cu descriere și fișiere opționale |
+| **Artifact** | Stores files produced by a run for download or transfer to another job |
+| **Cache** | Speeds up runs by reusing dependencies or other files |
+| **Job summary** | Displays Markdown written to the file identified by `$GITHUB_STEP_SUMMARY` |
+| **Container registry** | Stores Docker images, for example GHCR or ACR |
+| **GitHub Release** | Publishes a version associated with a tag, with notes and optional files |
 
-Cache-ul nu înlocuiește un artifact. Un cache salvat nu se suprascrie pentru aceeași cheie și același scope/version; schimbarea cheii permite crearea unei intrări noi. `cache-hit: true` indică o potrivire exactă, nu doar restaurarea printr-o cheie de rezervă.
+A cache does not replace an artifact. A saved cache cannot be overwritten for the same key, scope, and cache version; changing the key allows a new entry. `cache-hit: true` indicates an exact match, not just restoration through a fallback key.
 
-Summary-ul nu este un fișier comun tuturor workflow-urilor. Pentru reutilizarea raportului într-o altă rulare, salvează-l separat și încarcă-l ca artifact.
+The summary is not a shared file across workflows. To reuse a report in another run, save it separately and upload it as an artifact.
 
-### Containere în GitHub Actions
+### Containers in GitHub Actions
 
-| Configurare | Unde rulează clientul | Conectare la serviciu |
+| Configuration | Where the client runs | Service connection |
 |---|---|---|
-| Doar `services` | Direct pe runner | `localhost` și portul publicat |
-| `container` + `services` | În containerul jobului | Numele serviciului, de exemplu `postgres:5432` |
+| `services` only | Directly on the runner | `localhost` and a published port |
+| `container` + `services` | In the job container | The service name, such as `postgres:5432` |
 
-Maparea `5433:5432` înseamnă **portul 5433 pe runner → portul 5432 în container**. `localhost` se referă la mediul în care rulează procesul: runnerul sau containerul jobului.
+The mapping `5433:5432` means **port 5433 on the runner → port 5432 in the container**. `localhost` refers to the environment where the process runs: the runner or the job container.
 
-Runnerul găzduiește containerele. Service containers aparțin unui singur job și sunt eliminate la final. La fiecare rulare se creează containere noi; fișierele și datele lor nu sunt păstrate automat.
+The runner hosts the containers. Service containers belong to a single job and are removed when it ends. Each run creates new containers; their files and data are not automatically retained.
 
-`postgres:17` folosește implicit Docker Hub. `ghcr.io/donaldcarol/ci-tools:1.0` indică GHCR. Tagurile imaginilor pot fi mutate; un digest identifică exact conținutul imaginii.
+`postgres:17` uses Docker Hub by default. `ghcr.io/donaldcarol/ci-tools:1.0` specifies GHCR. Image tags can be moved; a digest identifies the exact image content.
 
-## Configurarea exercițiilor
+## Exercise setup
 
-### Secrets și environments
+### Secrets and environments
 
-- **Repository secret `DEMO_TOKEN`**: necesar pentru `call-greeting.yml` și `composite-demo.yml`. Folosește o valoare fictivă pentru laborator.
-- **Environments `staging` și `production`**: fiecare trebuie să aibă variabila `APP_URL` și secretul `DEPLOY_TOKEN`.
-- Aprobările și restricțiile de branch pentru environments se configurează în **Settings → Environments**.
-- `GITHUB_TOKEN` este furnizat automat. Publicarea imaginilor și crearea Releases folosesc acest token, cu permisiunile declarate în workflow.
+- **Repository secret `DEMO_TOKEN`**: required by `call-greeting.yml` and `composite-demo.yml`. Use a dummy value for the lab.
+- **Environments `staging` and `production`**: each needs the `APP_URL` variable and `DEPLOY_TOKEN` secret.
+- Configure environment approvals and branch restrictions in **Settings → Environments**.
+- `GITHUB_TOKEN` is supplied automatically. Image publishing and release creation use this token with the permissions declared in the workflow.
 
-Nu salva valori reale de secrets în repository, artifacts, cache sau rapoarte.
+Do not store real secret values in the repository, artifacts, caches, or reports.
 
-### Permisiunile tokenului
+### Token permissions
 
-| Permisiune | Exemplu în laborator |
+| Permission | Lab example |
 |---|---|
-| `contents: read` | Checkout-ul codului |
-| `contents: write` | Crearea unui Release și atașarea unui fișier |
-| `issues: write` | Crearea unui issue |
-| `actions: read` | Listarea și descărcarea artifactelor din alte rulări |
-| `packages: write` | Publicarea imaginii în GHCR |
+| `contents: read` | Checking out the code |
+| `contents: write` | Creating a release and attaching a file |
+| `issues: write` | Creating an issue |
+| `actions: read` | Listing and downloading artifacts from other runs |
+| `packages: write` | Publishing the image to GHCR |
 
-`permissions: {}` nu acordă permisiuni configurabile suplimentare tokenului. Acordă drepturi de scriere doar joburilor care au nevoie de ele.
+`permissions: {}` grants no additional configurable token permissions. Grant write permissions only to jobs that need them.
 
-### Imaginea CI
+### The CI image
 
-Workflow-ul **Publică imaginea CI** construiește Dockerfile-ul și publică:
+The [image publishing workflow](.github/workflows/publish-image.yml) builds the Dockerfile and publishes:
 
 ```text
 ghcr.io/donaldcarol/ci-tools:1.0
 ```
 
-Imaginea trebuie să fie disponibilă înaintea rulării exemplelor care o folosesc. În laborator este publică. Dacă lucrezi într-un fork, adaptează numele imaginii la propriul cont și configurează accesul dacă imaginea este privată.
+The image must be available before running the examples that use it. It is public in this lab. When working in a fork, adjust the image name to your own account and configure access if the image is private.
 
-Rularea repetată a workflow-ului de publicare poate actualiza tagul `1.0`. Pentru versiuni reproductibile, folosește taguri distincte și/sau digesturi.
+Running the publishing workflow again can update the `1.0` tag. For reproducible versions, use distinct tags and/or digests.
 
-## Teste și rapoarte
+## Tests and reports
 
-Din rădăcina repository-ului, cu Python instalat:
+From the repository root, with Python installed:
 
 ```powershell
 python -m unittest -v test_calculator
 ```
 
-În GitHub, workflow-ul **Demo teste Python** produce:
+The [Python test workflow](.github/workflows/tests-demo.yml) produces:
 
-- logul complet al testelor;
-- un Summary cu rezultatul pasului;
-- artifactul `raport-teste`, cu fișierul `tests.txt`, păstrat 7 zile.
+- the full test log;
+- a summary containing the test step's outcome;
+- the `raport-teste` artifact containing `tests.txt`, retained for 7 days.
 
-Pașii de raportare au `if: always()`, astfel încât rulează și după eșecul testelor. Succesul raportării nu anulează eșecul jobului.
+The reporting steps use `if: always()` so they run even after tests fail. Successful reporting does not cancel the job's failure.
 
-Exercițiul de eșec schimbă temporar `return a + b` în `return a - b`, fără modificarea testelor. După verificare, restabilește adunarea.
+The failure exercise temporarily replaces `return a + b` with `return a - b` without changing the tests. Restore addition after checking the results.
 
-## Taguri și Releases
+## Tags and releases
 
-Fluxul din `release-demo.yml` este:
+The flow in `release-demo.yml` is:
 
 ```text
 Push tag v* → tests → publish-release
-               ↓ eșec
-        publicarea este omisă
+               ↓ failure
+        publishing is skipped
 ```
 
-1. Salvează modificările, fă commit și push pe branchul pe care lucrezi.
-2. Creează un tag nou pe commitul curent.
-3. Publică tagul; acest push declanșează workflow-ul.
+1. Save your changes, commit, and push the branch you are working on.
+2. Create a new tag on the current commit.
+3. Push the tag to trigger the workflow.
 
 ```powershell
-# Exemplu: alege o versiune nouă, nefolosită.
-git tag -a v1.0.4 -m "Versiune de exercițiu"
+# Example: choose a new, unused version.
+git tag -a v1.0.4 -m "Practice release"
 git push origin v1.0.4
 ```
 
-Dacă testele trec, workflow-ul creează Release-ul și atașează `version.txt`. GitHub oferă automat și arhivele codului sursă din tag, în formatele ZIP și TAR.GZ.
+If the tests pass, the workflow creates a release and attaches `version.txt`. GitHub also automatically provides ZIP and TAR.GZ archives of the source code at the tag.
 
-Dacă testele eșuează, tagul rămâne în GitHub, dar `publish-release` este omis și Release-ul nu este creat. Un commit ulterior pe `main` nu mută tagul. Reexecutarea unei rulări folosește aceeași versiune de cod; pentru cod corectat creează o versiune nouă.
+If tests fail, the tag remains in GitHub, but `publish-release` is skipped and no release is created. A later commit on `main` does not move the tag. Rerunning a workflow uses the same code version; create a new version to test corrected code.
 
-Un Release nu face merge și nu face deploy. Crearea repetată a unui Release pentru un tag care are deja un Release nu este tratată de exemplul nostru.
+A release does not merge code or deploy it. This example does not handle creating a release again for a tag that already has one.
 
-## Git: recapitularea lucrului local
+## Git: working locally
 
 ```powershell
 git status
@@ -228,47 +228,47 @@ git switch main
 git pull --ff-only origin main
 git switch -c update-documentation
 
-# După editare:
+# After editing:
 git diff
 git add README.md
-git commit -m "Actualizează documentația"
+git commit -m "Update documentation"
 git push -u origin update-documentation
 ```
 
-Apoi creezi un PR către `main`, verifici schimbările și rezultatele workflow-urilor și faci merge. Push-urile ulterioare pe același branch actualizează PR-ul deschis; nu trebuie creat un PR pentru fiecare commit.
+Then open a PR targeting `main`, review the changes and workflow results, and merge it. Subsequent pushes to the same branch update the open PR; you do not need a new PR for every commit.
 
-După merge:
+After merging:
 
 ```powershell
 git switch main
 git pull --ff-only origin main
 ```
 
-În laborator am lucrat și direct pe `main` pentru a simplifica exercițiile, după ajustarea regulilor repository-ului. Într-un proiect de echipă, branchurile, PR-urile și verificările obligatorii controlează integrarea schimbărilor.
+During the lab, we also worked directly on `main` to simplify the exercises after adjusting the repository rules. In a team project, branches, PRs, and required checks control how changes are integrated.
 
-## Securitate: lecțiile discutate
+## Security lessons
 
-- Folosește permisiuni minime pentru `GITHUB_TOKEN`.
-- Transmite inputurile către script prin `env` și citează variabilele; evită interpolarea directă a datelor necontrolate în codul shell.
-- Fixează acțiunile externe la SHA complet când vrei să controlezi exact codul executat. Exemplele mai vechi includ și referințe prin tag.
-- Nu executa cod necontrolat dintr-un PR în contextul privilegiat al `pull_request_target`.
-- Un digest verifică identitatea/integritatea conținutului; nu garantează că acel conținut este sigur.
-- Nu trata cache-ul sau artifacts din surse necontrolate ca pe cod de încredere pentru un job privilegiat.
-- Runner-ele self-hosted pot păstra modificări, procese și acces la rețea între rulări; izolarea contează.
-- CODEOWNERS desemnează responsabilii. Obligativitatea aprobării lor trebuie configurată separat prin regulile branchului.
+- Give `GITHUB_TOKEN` the minimum required permissions.
+- Pass inputs to scripts through `env` and quote variables; avoid interpolating untrusted data directly into shell code.
+- Pin external actions to full commit SHAs when you need to control the exact code executed. Older examples also contain tag references.
+- Do not execute untrusted PR code in the privileged context of `pull_request_target`.
+- A digest establishes content identity/integrity; it does not guarantee that the content is safe.
+- Do not treat caches or artifacts from untrusted sources as trusted executable code in a privileged job.
+- Self-hosted runners may retain changes, processes, and network access between runs; isolation matters.
+- CODEOWNERS identifies responsible reviewers. Mandatory approval must be configured separately through branch rules.
 
-Am discutat și matrix, `include`/`exclude`, `fail-fast`, `max-parallel`, matrix dinamică și riscurile de cache poisoning. Nu toate lecțiile au un workflow dedicat în versiunea actuală a repository-ului.
+We also covered matrices, `include`/`exclude`, `fail-fast`, `max-parallel`, dynamic matrices, and cache poisoning risks. Not every lesson has a dedicated workflow in the current repository.
 
-## Proiectul practic următor
+## Next practical project
 
-Integrare GitHub Actions cu Azure, incluzând elemente de Azure Landing Zone:
+Integrate GitHub Actions with Azure, including Azure Landing Zone elements:
 
-- infrastructură ca cod în Bicep sau Terraform;
-- autentificare OIDC, fără un secret permanent pentru login;
-- organizare prin resource groups, naming și tags;
-- guvernanță prin Azure Policy și acces prin RBAC;
-- VNet și subnets;
-- monitorizare prin Log Analytics;
-- validare, previzualizarea schimbărilor și aprobare înainte de deploy.
+- infrastructure as code using Bicep or Terraform;
+- OIDC authentication without a long-lived login secret;
+- resource groups, naming conventions, and tags;
+- governance through Azure Policy and access control through RBAC;
+- a VNet and subnets;
+- monitoring through Log Analytics;
+- validation, a preview of proposed changes, and approval before deployment.
 
-Acestea sunt obiectivele proiectului următor, nu resurse deja implementate în acest repository.
+These are objectives for the next project, not resources already implemented in this repository.
